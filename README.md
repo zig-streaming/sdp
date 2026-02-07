@@ -15,7 +15,7 @@ const SDP = @import("sdp");
 const sdp_text =
     \\v=0
     \\o=jdoe 2890844526 2890842807 IN IP4 10.47.16.5
-    \\s=SDP Seminar\r\n\
+    \\s=SDP Seminar
     \\i=A Seminar on the session description protocol
     \\u=http://www.example.com/seminars/sdp.pdf
     \\e=j.doe@example.com (Jane Doe)
@@ -41,19 +41,21 @@ const sdp_text =
     \\
 ;
 
-var sdp = try SDP.parse(sdp_text);
+pub fn main() !void {
+    var sdp = try SDP.parse(sdp_text);
 
-var attribute_iterator = sdp.attributeIterator();
-while (try attribute_iterator.next()) |attribute| {
-    // Do something with the session-level attribute.
-}
-
-var media_iterator = sdp.mediaIterator();
-while (try media_iterator.next()) |media| {
-    // Do something with the media description.
-    attribute_iterator = media.attributeIterator();
+    var attribute_iterator = sdp.attributeIterator();
     while (try attribute_iterator.next()) |attribute| {
-        // Do something with the media-level attribute.
+        // Do something with the session-level attribute.
+    }
+
+    var media_iterator = sdp.mediaIterator();
+    while (try media_iterator.next()) |media| {
+        // Do something with the media description.
+        attribute_iterator = media.attributeIterator();
+        while (try attribute_iterator.next()) |attribute| {
+            // Do something with the media-level attribute.
+        }
     }
 }
 ```
